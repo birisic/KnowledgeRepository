@@ -1,0 +1,27 @@
+<div [class]="classes">
+  <div class="form-group">
+    <label *ngIf="label">{{ label }}</label>
+    <ng-container *ngIf="isTextarea(); else inputField">
+    <textarea
+      [attr.placeholder]="placeholder"
+      [ngModel]="value"
+      [required]="required"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [rows]="rows"
+      class="form-control"
+    ></textarea>
+    </ng-container>
+    <ng-template #inputField>
+      <input
+        [attr.type]="type"
+        [attr.placeholder]="placeholder"
+        [ngModel]="value"
+        [required]="required"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        class="form-control"
+      />
+    </ng-template>
+  </div>
+</div>
