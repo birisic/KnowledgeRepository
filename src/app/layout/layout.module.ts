@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
-import { NavigationComponent } from './navigation/navigation.component';
+// import { NavigationComponent } from './navigation/navigation.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ContentComponent } from './content/content.component';
 import { SharedModule } from '../shared/shared.module';
@@ -11,7 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [
     HeaderComponent,
-    NavigationComponent,
+    // NavigationComponent,
     SidebarComponent,
     ContentComponent
   ],
@@ -21,7 +21,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   exports: [
     HeaderComponent,
-    NavigationComponent,
+    // NavigationComponent,
     SidebarComponent,
     ContentComponent
   ]

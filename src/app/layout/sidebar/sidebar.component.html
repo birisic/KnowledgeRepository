@@ -1,0 +1,27 @@
+<div class="sidebar">
+    <ul>
+      <ng-container *ngFor="let workspace of getRootWorkspaces()">
+        <li>
+            <i class="me-2 fa-solid fa-caret-down"></i>
+          <strong>{{ workspace.name }}</strong>
+
+          <ul *ngIf="getChildWorkspaces(workspace).length > 0">
+            <ng-container *ngTemplateOutlet="recursiveWorkspace; context: { $implicit: getChildWorkspaces(workspace), level: 1 }"></ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  
+    <!-- Template for recursive workspace rendering -->
+    <ng-template #recursiveWorkspace let-workspaces let-level="level">
+      <li *ngFor="let workspace of workspaces" [style.margin-left.px]="level * 20">
+        <i class="me-2" [ngClass]="{'fa-solid fa-caret-down': workspace.type === WorkspaceType.Directory}"
+                        [ngClass]="{'fa-solid fa-file': workspace.type === WorkspaceType.Document}">
+        </i>
+        <strong>{{ workspace.name }} {{ loguj(workspace) }}</strong>
+        <ul *ngIf="getChildWorkspaces(workspace).length > 0">
+          <ng-container *ngTemplateOutlet="recursiveWorkspace; context: { $implicit: getChildWorkspaces(workspace), level: level + 1 }"></ng-container>
+        </ul>
+      </li>
+    </ng-template>
+  </div>
