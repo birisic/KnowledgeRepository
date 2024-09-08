@@ -1,8 +1,9 @@
 <div class="container-fluid m-0 p-0">
   <div class="row">
     <div class="col-12">
-      <div *ngIf="content">
-        <pre>{{ content }}</pre>
+      <div *ngIf="document && document.name && document.contents">
+        <h2 class="text-center">{{ document.name }}</h2> 
+        <pre>{{ document.contents }}</pre>
       </div>
     </div>
   </div>

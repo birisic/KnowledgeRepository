@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
 import { WorkspaceService } from '../../services/workspace.service';
+import { DocumentDto } from '../../dto/document.dto';
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
   styleUrl: './content.component.css'
 })
+
 export class ContentComponent {
-  public content: string | null = null;
+  public document: DocumentDto | null = null;
 
   public constructor(private workspaceService: WorkspaceService) {}
 
   ngOnInit(): void {
-    this.workspaceService.currentContent$.subscribe(content => {
-      this.content = content;
+    this.workspaceService.currentWorkspace$.subscribe(dto => {
+      this.document = dto;
     });
   }
 }

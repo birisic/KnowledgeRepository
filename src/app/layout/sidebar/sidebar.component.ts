@@ -158,7 +158,7 @@ export class SidebarComponent {
       workspace.contents = null;
     }
 
-    this.workspaceService.setContent(workspace.contents);
+    this.workspaceService.setContent(workspace.name, workspace.contents);
     this.openWorkspaceId = workspace.id;
   }
 
