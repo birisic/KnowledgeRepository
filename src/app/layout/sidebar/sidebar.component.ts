@@ -4,6 +4,7 @@ import { WorkspaceType } from '../../enums/workspace-type.enum';
 import { UseCase } from '../../enums/use-case.enum';
 import { WorkspaceUseCasesDto } from '../../dto/workspace-use-cases.dto';
 import { trigger, style, transition, animate, state } from '@angular/animations';
+import { WorkspaceService } from '../../services/workspace.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,7 +15,7 @@ import { trigger, style, transition, animate, state } from '@angular/animations'
       state(
         'open',
         style({
-          height: '*', // test out with multiple workspaces and same-level directories
+          height: '*',
         }),
       ),
       state(
@@ -63,6 +64,7 @@ export class SidebarComponent {
         type: WorkspaceType.Document,
         ownerId: 1,
         parentId: 1,
+        contents: "konenti"
     },
     {
       id: 5,
@@ -120,6 +122,8 @@ export class SidebarComponent {
     new WorkspaceUseCasesDto(9, [UseCase.WorkspaceRetrieval]),
   ];
 
+  public constructor(private workspaceService: WorkspaceService) {}
+
   public toggleWorkspace(workspace: Workspace): void {
 
     if (workspace.type !== WorkspaceType.Document) {
@@ -150,11 +154,16 @@ export class SidebarComponent {
   }
 
   public openDocument(workspace: Workspace): void {
-    // load the workspace.contents into the Content component
+    if (workspace.contents === undefined) {
+      workspace.contents = null;
+    }
+
+    this.workspaceService.setContent(workspace.contents);
     this.openWorkspaceId = workspace.id;
   }
 
   public closeDocument(): void {
+    this.workspaceService.setContent(null);
     this.openWorkspaceId = 0;
   }
 
