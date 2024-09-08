@@ -3,15 +3,37 @@ import { Workspace } from '../../interfaces/workspace.interface';
 import { WorkspaceType } from '../../enums/workspace-type.enum';
 import { UseCase } from '../../enums/use-case.enum';
 import { WorkspaceUseCasesDto } from '../../dto/workspace-use-cases.dto';
+import { trigger, style, transition, animate, state } from '@angular/animations';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrl: './sidebar.component.scss',
+  animations: [
+    trigger('toggleAnimation', [
+      state(
+        'open',
+        style({
+          height: '*', // test out with multiple workspaces and same-level directories
+        }),
+      ),
+      state(
+        'closed',
+        style({
+          height: '0px',
+        }),
+      ),
+      transition('open <=> closed', [animate('100ms ease-in-out')]),
+    ])
+  ]
 })
 
 export class SidebarComponent {
   public WorkspaceType = WorkspaceType;
+  public animationTime = 100;
+  public expandedWorkspaces: Set<number> = new Set<number>();
+  public renderedWorkspaces: Set<number> = new Set<number>();
+  public openWorkspaceId: number = 0; 
 
   public workspaces: Workspace[] = [
     {
@@ -51,12 +73,40 @@ export class SidebarComponent {
     },
     {
       id: 6,
-      name: 'Document 3',
-      type: WorkspaceType.Document,
+      name: 'Directory 3',
+      type: WorkspaceType.Directory,
       ownerId: 1,
       parentId: 5,
     },
+    {
+      id: 7,
+      name: 'Directory 4',
+      type: WorkspaceType.Directory,
+      ownerId: 1,
+      parentId: 6,
+    },
+    {
+      id: 8,
+      name: 'Document 3',
+      type: WorkspaceType.Document,
+      ownerId: 1,
+      parentId: 7,
+      contents: "tajni kontent ovog dokumenta"
+    },
+    {
+      id: 9,
+      name: 'New Workspace (1)',
+      type: WorkspaceType.Workspace,
+      ownerId: 1,
+      parentId: null,
+  },
   ];
+
+  /** Workspace nad kojim korisnik nema WorkspaceRetrieval UseCase treba da bude potpuno skriven korisniku. 
+   * Ovo ce se omoguciti tako sto ce ovaj Workspace biti inicijalizovan na osnovu podataka iz JSON fajla i ucitan u memoriju
+   * tek kada se prethodno dohvate podaci o razlicitim UseCasevima koje trenutni korisnik ima nad razlicitim Workspace-evima.
+   * Ovakav pristup ce simulirati kako bi to radilo sa pravimo podacima koji bi pristizali sa backenda. (za ispitni projekat)"
+   */
 
   public userWorkspaceUseCases: WorkspaceUseCasesDto[] = [
     new WorkspaceUseCasesDto(1, [UseCase.WorkspaceRetrieval, UseCase.WorkspaceCreation]),
@@ -64,8 +114,49 @@ export class SidebarComponent {
     new WorkspaceUseCasesDto(3, [UseCase.WorkspaceRetrieval]),
     new WorkspaceUseCasesDto(4, [UseCase.WorkspaceRetrieval]),
     new WorkspaceUseCasesDto(5, [UseCase.WorkspaceRetrieval]),
-    new WorkspaceUseCasesDto(6, [UseCase.WorkspaceRetrieval])
+    new WorkspaceUseCasesDto(6, [UseCase.WorkspaceRetrieval]),
+    new WorkspaceUseCasesDto(7, [UseCase.WorkspaceRetrieval]),
+    new WorkspaceUseCasesDto(8, [UseCase.WorkspaceRetrieval]),
+    new WorkspaceUseCasesDto(9, [UseCase.WorkspaceRetrieval]),
   ];
+
+  public toggleWorkspace(workspace: Workspace): void {
+
+    if (workspace.type !== WorkspaceType.Document) {
+      if (this.expandedWorkspaces.has(workspace.id)) {
+        this.expandedWorkspaces.delete(workspace.id);
+        setTimeout(() => this.renderedWorkspaces.delete(workspace.id), this.animationTime);
+      } 
+      else {
+        this.expandedWorkspaces.add(workspace.id);
+        this.renderedWorkspaces.add(workspace.id);
+      }
+    } 
+    else {
+      this.isOpen(workspace.id) ? this.closeDocument() : this.openDocument(workspace)
+    }
+  }
+
+  public shouldRender(id: number): boolean {
+    return this.renderedWorkspaces.has(id);
+  }
+
+  public isExpanded(id: number): boolean {
+    return this.expandedWorkspaces.has(id);
+  }
+
+  public isOpen(workspaceId: number): boolean {
+    return this.openWorkspaceId === workspaceId;
+  }
+
+  public openDocument(workspace: Workspace): void {
+    // load the workspace.contents into the Content component
+    this.openWorkspaceId = workspace.id;
+  }
+
+  public closeDocument(): void {
+    this.openWorkspaceId = 0;
+  }
 
   public hasUseCase(workspaceId: number, useCase: UseCase): boolean {
     const userWorkspace = this.userWorkspaceUseCases.find(item => item.workspaceId === workspaceId);
@@ -99,8 +190,5 @@ export class SidebarComponent {
     return this.workspaces.filter(workspace => parentWorkspace.type !== WorkspaceType.Document 
             && workspace.parentId === parentWorkspace.id 
             && this.hasAccessToWorkspaceAndAncestors(workspace));
-  }
-  public loguj(workspace: Workspace) {
-    console.log(workspace);
   }
 }
