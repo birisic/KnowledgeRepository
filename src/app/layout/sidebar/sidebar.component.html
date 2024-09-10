@@ -2,14 +2,17 @@
     <ul>
       <ng-container *ngFor="let workspace of getRootWorkspaces()">
         <li class="mt-0 p-2">
-            <i class="me-2 fa-solid"
+            <i class="me-2 px-2 fa-solid"
             [ngClass]="{
               'fa-caret-right': !isExpanded(workspace.id),
               'fa-caret-down': isExpanded(workspace.id)
             }"></i>
-          <strong class="user-select-none cursor-pointer" (click)="toggleWorkspace(workspace)">{{ workspace.name }}</strong>
-
-          <div [@toggleAnimation]="isExpanded(workspace.id) ? 'open' : 'closed'"> <!--*ngIf="isExpanded(workspace.id) && getChildWorkspaces(workspace).length > 0"-->
+          <strong class="user-select-none cursor-pointer" 
+            (click)="toggleWorkspace(workspace)"
+            (contextmenu)="onRightClick($event, workspace)">
+            {{ workspace.name }}
+          </strong>
+          <div [@toggleAnimation]="isExpanded(workspace.id) ? 'open' : 'closed'"> 
             <ul *ngIf="shouldRender(workspace.id) && getChildWorkspaces(workspace).length > 0"> 
               <ng-container *ngTemplateOutlet="recursiveWorkspace; context: { $implicit: getChildWorkspaces(workspace), level: 1 }"></ng-container>
             </ul>
@@ -22,7 +25,8 @@
     <ng-template #recursiveWorkspace let-workspaces let-level="level">
       <li *ngFor="let workspace of workspaces" [style.margin-left.px]="level * 20">
         <div (click)="toggleWorkspace(workspace)" 
-        [ngClass]="{'text-success': workspace.type === WorkspaceType.Document && isOpen(workspace.id)}">   
+             (contextmenu)="onRightClick($event, workspace)" 
+             [ngClass]="{'text-success': workspace.type === WorkspaceType.Document && isOpen(workspace.id)}">   
           <i *ngIf="workspace.type === WorkspaceType.Directory" class="me-2 px-2 fa-solid" [ngClass]="{
             'fa-caret-right': !isExpanded(workspace.id),
             'fa-caret-down': isExpanded(workspace.id)
@@ -34,7 +38,7 @@
             {{ workspace.name }}
           </strong>
         </div>
-        <div [@toggleAnimation]="isExpanded(workspace.id) ? 'open' : 'closed'"> <!--*ngIf="isExpanded(workspace.id) && getChildWorkspaces(workspace).length > 0"-->
+        <div [@toggleAnimation]="isExpanded(workspace.id) ? 'open' : 'closed'">
           <ul *ngIf="shouldRender(workspace.id) && getChildWorkspaces(workspace).length > 0"> 
             <ng-container *ngTemplateOutlet="recursiveWorkspace; context: { $implicit: getChildWorkspaces(workspace), level: 1 }"></ng-container>
           </ul>
@@ -42,3 +46,5 @@
       </li>
     </ng-template>
   </div>
+
+  <app-menu></app-menu> 

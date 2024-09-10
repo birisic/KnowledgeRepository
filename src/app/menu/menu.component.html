@@ -1,0 +1,17 @@
+@if(isVisible) {
+    <div [style.top.px]="positionY" [style.left.px]="positionX" class="menu">
+        <ul>
+            @if(selectedWorkspace && userWorkspacesUseCases.length > 0) {
+                @if(selectedWorkspace.type !== WorkspaceType.Document && hasUseCase(UseCase.WorkspaceCreation)) {
+                    <li (click)="onAction('Create')">Create</li>
+                }
+                @if (hasUseCase(UseCase.WorkspaceModification)) {
+                    <li (click)="onAction('Edit')">Edit</li>
+                }
+                @if (hasUseCase(UseCase.WorkspaceDeletion)) {
+                    <li (click)="onAction('Delete')">Delete</li>
+                }
+            }
+        </ul>
+      </div>
+}

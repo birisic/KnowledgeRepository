@@ -1,0 +1,67 @@
+[
+    {
+        "id": 1,
+        "name": "New Workspace",
+        "type": "Workspace",
+        "ownerId": 1,
+        "parentId": null
+    },
+    {
+        "id": 2,
+        "name": "Directory 1",
+        "type": "Directory",
+        "ownerId": 1,
+        "parentId": 1
+    },
+    {
+        "id": 3,
+        "name": "Document 1",
+        "type": "Document",
+        "ownerId": 1,
+        "parentId": 2
+    },
+    {
+        "id": 4,
+        "name": "Document 2",
+        "type": "Document",
+        "ownerId": 1,
+        "parentId": 1,
+        "contents": "kontenti"
+    },
+    {
+        "id": 5,
+        "name": "Directory 2",
+        "type": "Directory",
+        "ownerId": 1,
+        "parentId": 2
+    },
+    {
+        "id": 6,
+        "name": "Directory 3",
+        "type": "Directory",
+        "ownerId": 1,
+        "parentId": 5
+    },
+    {
+        "id": 7,
+        "name": "Directory 4",
+        "type": "Directory",
+        "ownerId": 1,
+        "parentId": 6
+    },
+    {
+        "id": 8,
+        "name": "Document 3",
+        "type": "Document",
+        "ownerId": 1,
+        "parentId": 7,
+        "contents": "tajni kontent ovog dokumenta"
+    },
+    {
+        "id": 9,
+        "name": "New Workspace (1)",
+        "type": "Workspace",
+        "ownerId": 1,
+        "parentId": null
+    }
+]
