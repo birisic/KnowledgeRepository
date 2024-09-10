@@ -16,15 +16,15 @@ export class AuthService {
   // decode the JWT, extract the usecases and construct the DTOs in this method
   private initializeUserWorkspaceUseCases(): WorkspaceUseCasesDto[] {
     return [
-      new WorkspaceUseCasesDto(1, [UseCase.WorkspaceRetrieval, UseCase.WorkspaceCreation, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(2, [UseCase.WorkspaceRetrieval, UseCase.WorkspaceCreation, UseCase.WorkspaceDeletion, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(3, [UseCase.WorkspaceRetrieval]),
-      new WorkspaceUseCasesDto(4, [UseCase.WorkspaceRetrieval]),
-      new WorkspaceUseCasesDto(5, [UseCase.WorkspaceRetrieval]),
-      new WorkspaceUseCasesDto(6, [UseCase.WorkspaceRetrieval]),
-      new WorkspaceUseCasesDto(7, [UseCase.WorkspaceRetrieval]),
-      new WorkspaceUseCasesDto(8, [UseCase.WorkspaceRetrieval]),
-      new WorkspaceUseCasesDto(9, [UseCase.WorkspaceRetrieval]),
+      new WorkspaceUseCasesDto(1, [UseCase.WorkspaceCreation, UseCase.WorkspaceModification]),
+      new WorkspaceUseCasesDto(2, [UseCase.WorkspaceCreation, UseCase.WorkspaceDeletion, UseCase.WorkspaceModification]),
+      new WorkspaceUseCasesDto(3, [UseCase.WorkspaceDeletion]),
+      new WorkspaceUseCasesDto(4, []),
+      new WorkspaceUseCasesDto(5, []),
+      new WorkspaceUseCasesDto(6, []),
+      new WorkspaceUseCasesDto(7, []),
+      new WorkspaceUseCasesDto(8, []),
+      new WorkspaceUseCasesDto(9, []),
     ];
   }
 }

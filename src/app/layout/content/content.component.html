@@ -1,10 +1,16 @@
-<div class="container-fluid m-0 p-0">
-  <div class="row">
+<div class="container-fluid mt-2 p-0 w-100 h-100 content-container">
+  <div class="row h-100">
     <div class="col-12">
-      <div *ngIf="document && document.name && document.contents">
-        <h2 class="text-center">{{ document.name }}</h2> 
-        <pre>{{ document.contents }}</pre>
+      <div *ngIf="document; else noDocument">
+        <h2 class="text-center mt-4">{{ document.name }}</h2> 
+        <div *ngIf="document.contents; else emptyDocument" class="document-contents" [innerHTML]="document.contents"></div>
+        <ng-template #emptyDocument>
+          <p class="text-center mt-4">This document is empty.</p>
+        </ng-template>
       </div>
+      <ng-template #noDocument>
+        <h2 class="text-center mt-4">No document selected.</h2>
+      </ng-template>
     </div>
   </div>
 </div>

@@ -54,7 +54,7 @@ export class SidebarComponent {
   }
 
   public fetchWorkspaces(): void {
-    this.workspaceService.getWorkspaces().subscribe((data: Workspace[]) => {      
+    this.workspaceService.workspaces$.subscribe((data: Workspace[]) => {      
       this.workspaces = data.map(workspace => {
         return {
           ...workspace,
@@ -62,6 +62,8 @@ export class SidebarComponent {
         };
       });
     });
+
+    this.workspaceService.initializeWorkspaces();
   }
 
   public toggleWorkspace(workspace: Workspace): void {

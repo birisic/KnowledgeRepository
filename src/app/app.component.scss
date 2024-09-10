@@ -1,5 +1,7 @@
-$plava-boja: blue;
+.bg-light-gray {
+  background-color: rgb(231, 230, 230);
+}
 
-.plava {
-  color: $plava-boja;
+.min-h-vh {
+  min-height: 100vh;
 }

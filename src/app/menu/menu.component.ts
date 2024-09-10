@@ -4,11 +4,13 @@ import { AuthService } from '../services/auth.service';
 import { WorkspaceUseCasesDto } from '../dto/workspace-use-cases.dto';
 import { WorkspaceType } from '../enums/workspace-type.enum';
 import { UseCase } from '../enums/use-case.enum';
+import { WorkspaceService } from '../services/workspace.service';
+import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [],
+  imports: [ConfirmationDialogComponent],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
@@ -21,9 +23,11 @@ export class MenuComponent {
   public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
   public WorkspaceType = WorkspaceType;
   public UseCase = UseCase;
+  public showConfirmationDialog: boolean = false;
 
   public constructor(
-    authService: AuthService
+    authService: AuthService,
+    private workspaceService: WorkspaceService
   ) {
     this.userWorkspacesUseCases = authService.getUserWorkspacesUseCases();
   }
@@ -44,21 +48,46 @@ export class MenuComponent {
     this.isVisible = false;
   }
 
-  public onAction(action: string): void {
-    // check if the user has the appropriate UseCase for the selected Workspace
-    // if so, and if it's delete, call the service method and remove the Workspace from memory
-    // if it's edit, call the service method which routes the user to the Edit page (if you edit names, make sure to have a counter)
-    // if it's create, call the service method which routes the user to the Create page
-  
+  public onAction(useCase: UseCase): void {
+    // if it's delete, call the service method and remove the Workspace from memory
+    // if it's edit, call the service method which routes the user to the Edit page
+    // if it's create, call the service method which routes the user to the Create page 
+
+    switch (useCase) {
+      // case UseCase.WorkspaceCreation:
+      //   this.workspaceService.routeToCreatePage();
+      //   break;
+
+      // case UseCase.WorkspaceModification:
+      //   this.workspaceService.routeToEditPage();
+      //   break;
+
+      case UseCase.WorkspaceDeletion:
+        this.showConfirmationDialog = true;
+        break;
+
+      default:
+        break;
+    }
+    
     this.hideMenu();
   }
 
   public hasUseCase(useCase: UseCase): boolean | null {  
-    console.log(this.selectedWorkspace && this.userWorkspacesUseCases?.some(dto =>
-      dto.workspaceId === this.selectedWorkspace?.id && dto.useCases.includes(useCase)));
-      
     return this.selectedWorkspace && this.userWorkspacesUseCases?.some(dto =>
       dto.workspaceId === this.selectedWorkspace?.id && dto.useCases.includes(useCase)
     );
+  }
+
+  public confirmDeletion(): void {
+    if (this.selectedWorkspace) {
+      this.workspaceService.deleteWorkspace(this.selectedWorkspace);
+    }
+
+    this.showConfirmationDialog = false; 
+  }
+
+  public cancelDeletion(): void {
+    this.showConfirmationDialog = false;
   }
 }

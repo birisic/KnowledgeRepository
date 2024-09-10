@@ -5,7 +5,7 @@ import { DocumentDto } from '../../dto/document.dto';
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
-  styleUrl: './content.component.css'
+  styleUrl: './content.component.scss'
 })
 
 export class ContentComponent {
@@ -14,7 +14,7 @@ export class ContentComponent {
   public constructor(private workspaceService: WorkspaceService) {}
 
   ngOnInit(): void {
-    this.workspaceService.currentWorkspace$.subscribe(dto => {
+    this.workspaceService.currentWorkspace$.subscribe(dto => {            
       this.document = dto;
     });
   }
