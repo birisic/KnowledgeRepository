@@ -139,7 +139,6 @@ export class SidebarComponent {
   public getChildWorkspaces(parentWorkspace: Workspace): Workspace[] {  
     return this.workspaces.filter(workspace => parentWorkspace.type !== WorkspaceType.Document 
             && workspace.parentId === parentWorkspace.id); 
-            // && this.hasAccessToWorkspaceAndAncestors(workspace));
   }
 
   public onRightClick(event: MouseEvent, workspace: Workspace): void {

@@ -54,9 +54,9 @@ export class MenuComponent {
     // if it's create, call the service method which routes the user to the Create page 
 
     switch (useCase) {
-      // case UseCase.WorkspaceCreation:
-      //   this.workspaceService.routeToCreatePage();
-      //   break;
+      case UseCase.WorkspaceCreation:
+        this.workspaceService.routeToCreatePage();
+        break;
 
       // case UseCase.WorkspaceModification:
       //   this.workspaceService.routeToEditPage();

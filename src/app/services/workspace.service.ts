@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { DocumentDto } from '../dto/document.dto';
 import { HttpClient } from '@angular/common/http';
 import { Workspace } from '../interfaces/workspace.interface';
+import { ToastStatus } from '../enums/toast-status.enum';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class WorkspaceService
   public workspaces$ = this.workspacesSubject.asObservable();
   private dataPath = 'assets/data/workspaces.json';
 
-  private constructor(private http: HttpClient) {}
+  private constructor(private http: HttpClient, private toastService: ToastService) {}
 
   public setContent(name:string | null = null, contents: string | null = null): void {
     let dto: DocumentDto | null = null;
@@ -38,9 +40,22 @@ export class WorkspaceService
   }
 
   public deleteWorkspace(workspace: Workspace) {
+    const childWorkspaces = this.getChildWorkspaces(workspace);
+
+    if (childWorkspaces.length > 0) {
+      this.toastService.show("Cannot delete the workspace because it has child workspaces.", ToastStatus.Warning);
+      return; 
+    }
+
     const currentWorkspaces = this.workspacesSubject.getValue();
     const updatedWorkspaces = currentWorkspaces.filter(w => w.id !== workspace.id);
     this.workspacesSubject.next(updatedWorkspaces);
     this.setContent();
+    this.toastService.show(workspace.type + ` "${workspace.name}"` +" was successfully deleted.", ToastStatus.Success);
+  }
+
+  public getChildWorkspaces(parentWorkspace: Workspace): Workspace[] {
+    const currentWorkspaces = this.workspacesSubject.getValue();
+    return currentWorkspaces.filter(workspace => workspace.parentId === parentWorkspace.id);
   }
 }
