@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "School Workspace",
+        "name": "School Workspace (right click me)",
         "type": "Workspace",
         "ownerId": 1,
         "parentId": null

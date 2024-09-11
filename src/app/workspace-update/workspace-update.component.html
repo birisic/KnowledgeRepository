@@ -1,1 +1,18 @@
-<p>workspace-update works!</p>
+<div class="content-container">
+  <h2>Update Workspace</h2>
+  <form (ngSubmit)="updateWorkspace()">
+    <div class="form-group">
+      <label for="workspaceName">Workspace Name</label>
+      <input type="text" id="workspaceName" [(ngModel)]="workspaceName" name="workspaceName" required />
+    </div>
+    <div class="form-group" *ngIf="workspaceType === 'Document'">
+      <label for="workspaceContents">Contents</label>
+      <ckeditor 
+          [editor]="Editor"
+          [(ngModel)]="workspaceContents" 
+          name="workspaceContents">
+      </ckeditor>
+    </div>
+    <button type="submit">Update Workspace</button>
+  </form>
+</div>

@@ -67,4 +67,8 @@ export class WorkspaceService
   public routeToCreatePage(parentId: number): void {
       this.router.navigate(['/create', parentId]);
   }
+
+  public routeToEditPage(workspaceId: number): void {
+    this.router.navigate(['/edit/', workspaceId]);
+  }
 }

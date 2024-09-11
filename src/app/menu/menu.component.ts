@@ -57,9 +57,12 @@ export class MenuComponent {
         
         break;
 
-      // case UseCase.WorkspaceModification:
-      //   this.workspaceService.routeToEditPage();
-      //   break;
+      case UseCase.WorkspaceModification:
+        if (this.selectedWorkspace) {
+          this.workspaceService.routeToEditPage(this.selectedWorkspace.id); // Pass selected workspace id
+        }       
+         
+        break;
 
       case UseCase.WorkspaceDeletion:
         this.showConfirmationDialog = true;
