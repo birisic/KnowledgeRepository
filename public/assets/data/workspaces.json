@@ -1,67 +1,24 @@
 [
     {
         "id": 1,
-        "name": "New Workspace",
+        "name": "School Workspace",
         "type": "Workspace",
         "ownerId": 1,
         "parentId": null
     },
     {
         "id": 2,
-        "name": "Directory 1",
+        "name": "Currently Studying",
         "type": "Directory",
         "ownerId": 1,
         "parentId": 1
     },
     {
         "id": 3,
-        "name": "Document 1",
+        "name": "TypeScript",
         "type": "Document",
         "ownerId": 1,
-        "parentId": 2
-    },
-    {
-        "id": 4,
-        "name": "Document 2",
-        "type": "Document",
-        "ownerId": 1,
-        "parentId": 1,
-        "contents": "<strong>kontentikontentikontentikontenti</strong> kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti kontentikontentikontentikontenti"
-    },
-    {
-        "id": 5,
-        "name": "Directory 2",
-        "type": "Directory",
-        "ownerId": 1,
-        "parentId": 2
-    },
-    {
-        "id": 6,
-        "name": "Directory 3",
-        "type": "Directory",
-        "ownerId": 1,
-        "parentId": 5
-    },
-    {
-        "id": 7,
-        "name": "Directory 4",
-        "type": "Directory",
-        "ownerId": 1,
-        "parentId": 6
-    },
-    {
-        "id": 8,
-        "name": "Document 3",
-        "type": "Document",
-        "ownerId": 1,
-        "parentId": 7,
-        "contents": "tajni kontent ovog dokumenta"
-    },
-    {
-        "id": 9,
-        "name": "New Workspace (1)",
-        "type": "Workspace",
-        "ownerId": 1,
-        "parentId": null
+        "parentId": 2,
+        "contents": "<ul><li><p><strong>Strongly Typed</strong> 🔒: TypeScript is a statically typed superset of JavaScript, providing optional types.</p><p>typescript</p><p>&nbsp;</p><p>Copy code</p><p>let isDone: boolean = false;</p></li><li><p><strong>Interfaces</strong> 📜: Define complex types and enforce structure in objects.</p><p>typescript</p><p>&nbsp;</p><p>Copy code</p><p>interface Person { &nbsp;firstName: string; &nbsp;lastName: string;}</p></li><li><p><strong>Classes</strong> 🏗️: Create custom types with properties and methods.</p><p>typescript</p><p>&nbsp;</p><p>Copy code</p><p>class Animal { &nbsp;name: string; &nbsp;constructor(name: string) { this.name = name; } &nbsp;makeSound() { console.log('Some sound'); }}</p></li><li><p><strong>Generics</strong> 🧱: Allows writing reusable and flexible code.</p><p>typescript</p><p>&nbsp;</p><p>Copy code</p><p>function identity&lt;T&gt;(arg: T): T { return arg; }</p></li><li><p><strong>Type Inference</strong> ��educated: TypeScript can infer the type based on the value.</p><p>typescript</p><p>&nbsp;</p><p>Copy code</p><p>let message = 'Hello World'; // message is of type string</p></li></ul>"
     }
 ]

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ToastStatus } from '../../enums/toast-status.enum';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../services/toast.service';
 

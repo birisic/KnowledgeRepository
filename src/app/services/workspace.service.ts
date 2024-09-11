@@ -5,19 +5,24 @@ import { HttpClient } from '@angular/common/http';
 import { Workspace } from '../interfaces/workspace.interface';
 import { ToastStatus } from '../enums/toast-status.enum';
 import { ToastService } from './toast.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkspaceService 
 {
-  private currentWorkspaceSubject = new BehaviorSubject<DocumentDto | null>(null);
+  public currentWorkspaceSubject = new BehaviorSubject<DocumentDto | null>(null);
   public currentWorkspace$ = this.currentWorkspaceSubject.asObservable();
-  private workspacesSubject = new BehaviorSubject<Workspace[]>([]);
+  public workspacesSubject = new BehaviorSubject<Workspace[]>([]);
   public workspaces$ = this.workspacesSubject.asObservable();
   private dataPath = 'assets/data/workspaces.json';
 
-  private constructor(private http: HttpClient, private toastService: ToastService) {}
+  private constructor(
+    private http: HttpClient, 
+    private toastService: ToastService, 
+    private router: Router
+  ) {}
 
   public setContent(name:string | null = null, contents: string | null = null): void {
     let dto: DocumentDto | null = null;
@@ -57,5 +62,9 @@ export class WorkspaceService
   public getChildWorkspaces(parentWorkspace: Workspace): Workspace[] {
     const currentWorkspaces = this.workspacesSubject.getValue();
     return currentWorkspaces.filter(workspace => workspace.parentId === parentWorkspace.id);
+  }
+
+  public routeToCreatePage(parentId: number): void {
+      this.router.navigate(['/create', parentId]);
   }
 }

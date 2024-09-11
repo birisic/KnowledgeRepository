@@ -6,25 +6,21 @@ import { UseCase } from '../enums/use-case.enum';
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor() {}
+  public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
+  public constructor() {}
 
   public getUserWorkspacesUseCases(): WorkspaceUseCasesDto[] {
     return this.initializeUserWorkspaceUseCases();
   }
 
-  // decode the JWT, extract the usecases and construct the DTOs in this method
+  // decode the JWT, extract the usecases and construct the DTOs in this method (za ispit)
   private initializeUserWorkspaceUseCases(): WorkspaceUseCasesDto[] {
-    return [
+    this.userWorkspacesUseCases = [
       new WorkspaceUseCasesDto(1, [UseCase.WorkspaceCreation, UseCase.WorkspaceModification]),
       new WorkspaceUseCasesDto(2, [UseCase.WorkspaceCreation, UseCase.WorkspaceDeletion, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(3, [UseCase.WorkspaceDeletion]),
-      new WorkspaceUseCasesDto(4, []),
-      new WorkspaceUseCasesDto(5, []),
-      new WorkspaceUseCasesDto(6, []),
-      new WorkspaceUseCasesDto(7, []),
-      new WorkspaceUseCasesDto(8, []),
-      new WorkspaceUseCasesDto(9, []),
+      new WorkspaceUseCasesDto(3, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
     ];
+
+    return this.userWorkspacesUseCases;
   }
 }

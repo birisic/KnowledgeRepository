@@ -1,1 +1,25 @@
-<p>workspace-create works!</p>
+<div class="content-container">
+    <h2>Create New Workspace</h2>
+    <form (ngSubmit)="createWorkspace()">
+      <div class="form-group d-inline-block me-3">
+        <p>Parent Workspace Name: {{ parentWorkspace?.name ?? '' }}</p>
+        <label for="workspaceName">Workspace Name</label>
+        <input type="text" id="workspaceName" [(ngModel)]="workspaceName" name="workspaceName" required />
+      </div>
+      <div class="form-group d-inline-block">
+        <label for="workspaceType">Workspace Type</label>
+        <select id="workspaceType" [(ngModel)]="workspaceType" name="workspaceType" required>
+          <option *ngFor="let type of workspaceTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="workspaceContents">Contents</label>
+        <ckeditor 
+            [editor]="Editor"
+            [(ngModel)]="workspaceContents" 
+            name="workspaceContents">
+        </ckeditor>
+      </div>
+      <button type="submit">Create Workspace</button>
+    </form>
+  </div>

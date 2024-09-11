@@ -2,16 +2,17 @@
     <ul>
       <ng-container *ngFor="let workspace of getRootWorkspaces()">
         <li class="mt-0 p-2">
-            <i class="me-2 px-2 fa-solid"
+          <div (click)="toggleWorkspace(workspace)"
+               (contextmenu)="onRightClick($event, workspace)">
+            <i class="px-2 fa-solid"
             [ngClass]="{
               'fa-caret-right': !isExpanded(workspace.id),
               'fa-caret-down': isExpanded(workspace.id)
             }"></i>
-          <strong class="user-select-none cursor-pointer" 
-            (click)="toggleWorkspace(workspace)"
-            (contextmenu)="onRightClick($event, workspace)">
+          <strong class="user-select-none cursor-pointer">
             {{ workspace.name }}
           </strong>
+          </div>
           <div [@toggleAnimation]="isExpanded(workspace.id) ? 'open' : 'closed'"> 
             <ul *ngIf="shouldRender(workspace.id) && getChildWorkspaces(workspace).length > 0"> 
               <ng-container *ngTemplateOutlet="recursiveWorkspace; context: { $implicit: getChildWorkspaces(workspace), level: 1 }"></ng-container>
@@ -27,11 +28,11 @@
         <div (click)="toggleWorkspace(workspace)" 
              (contextmenu)="onRightClick($event, workspace)" 
              [ngClass]="{'text-success': workspace.type === WorkspaceType.Document && isOpen(workspace.id)}">   
-          <i *ngIf="workspace.type === WorkspaceType.Directory" class="me-2 px-2 fa-solid" [ngClass]="{
+          <i *ngIf="workspace.type === WorkspaceType.Directory" class="px-2 fa-solid" [ngClass]="{
             'fa-caret-right': !isExpanded(workspace.id),
             'fa-caret-down': isExpanded(workspace.id)
           }"></i>
-          <i *ngIf="workspace.type === WorkspaceType.Document" class="me-2 px-2 fa-solid fa-file"></i>
+          <i *ngIf="workspace.type === WorkspaceType.Document" class="px-2 fa-solid fa-file"></i>
   
           <strong class="user-select-none cursor-pointer"
           [ngClass]="{'text-decoration-underline text-success': workspace.type === WorkspaceType.Document && isOpen(workspace.id)}">

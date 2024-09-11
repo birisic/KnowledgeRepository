@@ -49,13 +49,12 @@ export class MenuComponent {
   }
 
   public onAction(useCase: UseCase): void {
-    // if it's delete, call the service method and remove the Workspace from memory
-    // if it's edit, call the service method which routes the user to the Edit page
-    // if it's create, call the service method which routes the user to the Create page 
-
     switch (useCase) {
       case UseCase.WorkspaceCreation:
-        this.workspaceService.routeToCreatePage();
+        if (this.selectedWorkspace) {
+          this.workspaceService.routeToCreatePage(this.selectedWorkspace.id);
+        }
+        
         break;
 
       // case UseCase.WorkspaceModification:

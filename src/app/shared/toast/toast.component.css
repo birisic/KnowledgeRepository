@@ -24,7 +24,7 @@
     color: #000; 
   }
   
-  .toast-message.error {
+  .toast-message.danger {
     background-color: #dc3545;
   }
   

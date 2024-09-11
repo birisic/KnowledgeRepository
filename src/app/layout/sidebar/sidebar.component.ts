@@ -7,6 +7,7 @@ import { trigger, style, transition, animate, state } from '@angular/animations'
 import { WorkspaceService } from '../../services/workspace.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -44,6 +45,7 @@ export class SidebarComponent {
 
   public constructor(
     private workspaceService: WorkspaceService,
+    private router: Router,
     authService: AuthService
   ) {
     this.userWorkspacesUseCases = authService.getUserWorkspacesUseCases();
@@ -67,7 +69,7 @@ export class SidebarComponent {
   }
 
   public toggleWorkspace(workspace: Workspace): void {
-    if (workspace.type !== WorkspaceType.Document) {
+    if (workspace.type !== WorkspaceType.Document) {      
       if (this.expandedWorkspaces.has(workspace.id)) {
         this.expandedWorkspaces.delete(workspace.id);
         setTimeout(() => this.renderedWorkspaces.delete(workspace.id), this.animationTime);
@@ -86,7 +88,7 @@ export class SidebarComponent {
     return this.renderedWorkspaces.has(id);
   }
 
-  public isExpanded(id: number): boolean {
+  public isExpanded(id: number): boolean {    
     return this.expandedWorkspaces.has(id);
   }
 
@@ -101,6 +103,8 @@ export class SidebarComponent {
 
     this.workspaceService.setContent(workspace.name, workspace.contents);
     this.openWorkspaceId = workspace.id;
+
+    this.router.navigate(['/']);
   }
 
   public closeDocument(): void {
