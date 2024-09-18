@@ -6,5 +6,6 @@ import { WorkspaceUpdateComponent } from './workspace-update/workspace-update.co
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: ContentComponent }, 
   { path: 'create/:parentId', component: WorkspaceCreateComponent }, 
-  { path: 'edit/:id', component: WorkspaceUpdateComponent }
+  { path: 'edit/:id', component: WorkspaceUpdateComponent },
+  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
 ];

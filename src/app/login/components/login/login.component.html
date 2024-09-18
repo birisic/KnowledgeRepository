@@ -1,0 +1,39 @@
+<div class="min-vh-100 d-flex flex-column justify-content-center align-items-center mb-bg-gradient">
+    <div class="card shadow-sm p-4 w-100 max-w-md">
+      <h1 class="text-center">Before you go in...</h1>
+      <h5 class="text-center text-muted mb-4">Please enter your details</h5>
+  
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text" 
+            id="username" 
+            [(ngModel)]="form.username" 
+            name="username" 
+            class="form-control"
+            required
+          />
+          <div *ngIf="form.errors?.username" class="text-danger mt-1">{{ form.errors.username }}</div>
+        </div>
+      
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="form.password"
+            name="password"
+            class="form-control"
+            required
+          />
+          <div *ngIf="form.errors?.password" class="text-danger mt-1">{{ form.errors.password }}</div>
+        </div>
+      
+        <button type="submit" class="btn btn-success w-100">
+          Log in
+        </button>
+      </form>
+    </div>
+  </div>
+  

@@ -23,11 +23,26 @@ export class AuthService {
       new WorkspaceUseCasesDto(5, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
       new WorkspaceUseCasesDto(6, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
       new WorkspaceUseCasesDto(7, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
-      new WorkspaceUseCasesDto(8, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
-
-
+      new WorkspaceUseCasesDto(8, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion])
     ];
 
     return this.userWorkspacesUseCases;
+  }
+
+  public getJwtToken(): string {
+    //get from Local Storage
+    return "tokenn";
+  }
+
+  public setJwtToken(): void {
+    let token = this.getJwtToken();
+    localStorage.setItem("token", token);
+  }
+
+  public getJwtTokenData(): string {
+    let token = this.getJwtToken();
+    // decode...
+    let tokenData = '';
+    return tokenData;
   }
 }

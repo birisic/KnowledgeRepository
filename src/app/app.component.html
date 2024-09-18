@@ -1,12 +1,21 @@
 <app-toast></app-toast>
-<app-header></app-header>
-<div class="container-fluid min-h-vh m-0 p-0 w-100 h-100 bg-light-gray">
-  <div class="row w-100">
-    <div class="col-3">
-       <app-sidebar></app-sidebar>
-    </div>
-    <div class="col-9 p-0">
-        <router-outlet />
+
+@if (showLayout) 
+{
+  <app-header></app-header>
+  <div class="container-fluid min-h-vh m-0 p-0 w-100 h-100 bg-light-gray">
+    <div class="row w-100">
+      <div class="col-3">
+        <app-sidebar></app-sidebar>
+      </div>
+      <div class="col-9 p-0">
+          <router-outlet />
+      </div>
     </div>
   </div>
-</div>
+}
+
+@else 
+{
+  <router-outlet />
+}
