@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthRequest } from '../../../interfaces/auth-request';
+import { ToastService } from '../../../services/toast.service';
+import { ToastStatus } from '../../../enums/toast-status.enum';
+import { LoginService } from '../../business-logic/api/login.service';
+import { Router } from '@angular/router';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +15,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent {
   public loginForm!: FormGroup;
 
-  ngOnInit(): void {
+  public constructor(
+    private toastService: ToastService,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
+
+  public ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', [
         Validators.required,
@@ -25,10 +37,53 @@ export class LoginComponent {
 
   public onSubmit(): void {
     if (this.loginForm.valid) {
-      console.log('Form Submitted:', this.loginForm.value);
+      this.login();
     } else {
       this.loginForm.markAllAsTouched();
     }
+  }
+
+  public login(): void {
+    const loginData: AuthRequest = this.getLoginData();
+        
+    // make api call and return token, if it fails then show a toast message
+    this.loginService.requestToken(loginData).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.router.navigateByUrl('/');
+        this.toastService.show("Successfully logged in.", ToastStatus.Success);
+      },
+      error: (err) => {
+        switch (err.status) {
+          case HttpStatusCode.Unauthorized:
+            this.toastService.show("Failed login attempt. Please check your details and try again.", ToastStatus.Danger);
+            break;
+          case HttpStatusCode.Conflict:
+            this.toastService.show("An error occured on the server. Please try again.", ToastStatus.Warning);
+            break;
+          case HttpStatusCode.InternalServerError:
+            this.toastService.show("An error occured on the server. Please try again later.", ToastStatus.Danger);
+            break;
+          case HttpStatusCode.UnprocessableEntity:
+            this.toastService.show(err.error[0].error, ToastStatus.Danger);
+            break;
+          default:
+            this.toastService.show("An error occurred on the server. Please try again.", ToastStatus.Danger);
+            break;
+        }
+
+        console.log(err);
+      }
+    });
+  }
+
+  public getLoginData(): AuthRequest {
+      let formValue = this.loginForm.getRawValue();
+
+      return {
+        username: formValue.username,
+        password: formValue.password,
+      }
   }
 
   get username() { return this.loginForm.get('username'); }

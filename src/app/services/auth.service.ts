@@ -7,6 +7,8 @@ import { UseCase } from '../enums/use-case.enum';
 })
 export class AuthService {
   public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
+  private localStorageTokenKey = "token";
+
   public constructor() {}
 
   public getUserWorkspacesUseCases(): WorkspaceUseCasesDto[] {
@@ -29,20 +31,18 @@ export class AuthService {
     return this.userWorkspacesUseCases;
   }
 
-  public getJwtToken(): string {
-    //get from Local Storage
-    return "tokenn";
+  public getJwtTokenFromLocalStorage(): string | null {
+    return localStorage.getItem(this.localStorageTokenKey);    ;
   }
 
-  public setJwtToken(): void {
-    let token = this.getJwtToken();
-    localStorage.setItem("token", token);
+  public setJwtTokenInLocalStorage(token: string): void {
+    localStorage.setItem(this.localStorageTokenKey, token);
   }
 
-  public getJwtTokenData(): string {
-    let token = this.getJwtToken();
+  public getJwtTokenDataFromLocalStorage(): string {
+    const token = this.getJwtTokenFromLocalStorage();
     // decode...
-    let tokenData = '';
+    const tokenData = '';
     return tokenData;
   }
 }
