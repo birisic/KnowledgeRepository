@@ -7,7 +7,12 @@ import { ToastComponent } from './shared/toast/toast.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LayoutModule, FormsModule, ToastComponent],
+  imports: [
+    RouterOutlet,
+    LayoutModule,
+    FormsModule,
+    ToastComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['../styles.scss', './app.component.scss']
 })

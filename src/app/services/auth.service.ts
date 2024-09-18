@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { WorkspaceUseCasesDto } from '../dto/workspace-use-cases.dto';
 import { UseCase } from '../enums/use-case.enum';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
-  private localStorageTokenKey = "token";
+  private localStorageTokenKey: string = "token";
+  public tokenData!: string | null;
 
   public constructor(
-    private router: Router
+    private router: Router,
   ) {}
 
   public getUserWorkspacesUseCases(): WorkspaceUseCasesDto[] {
@@ -42,14 +44,21 @@ export class AuthService {
     localStorage.setItem(this.localStorageTokenKey, token);
   }
 
-  public getJwtTokenData(): string {
+  public getJwtTokenData(): string | null {
     const token = this.getJwtTokenFromLocalStorage();
-    // decode...
-    const tokenData = '';
-    return tokenData;
+
+    if (token === null) {
+      return null;
+    }
+
+    const jwtHelper = new JwtHelperService();
+    return jwtHelper.decodeToken(token);
   }
 
-  //logout
+  public decodeToken(): void {
+    this.tokenData = this.getJwtTokenData();
+  }
+
   public logout(): void {
     localStorage.removeItem(this.localStorageTokenKey);
     this.router.navigateByUrl("/login");

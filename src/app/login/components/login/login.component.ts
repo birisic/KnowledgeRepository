@@ -51,9 +51,14 @@ export class LoginComponent {
     this.loginService.requestToken(loginData).subscribe({
       next: (data) => { 
         this.authService.setJwtTokenInLocalStorage(data.token);
+        this.authService.decodeToken();
 
-        this.router.navigateByUrl('/');
-        this.toastService.show("Successfully logged in.", ToastStatus.Success);
+        if (this.authService.tokenData !== null) {
+          this.router.navigateByUrl('/');
+          this.toastService.show("Successfully logged in.", ToastStatus.Success);
+        } else {
+          this.toastService.show("An error occured on the server. Please try again later.", ToastStatus.Danger);
+        }
       },
       error: (err) => {
         switch (err.status) {

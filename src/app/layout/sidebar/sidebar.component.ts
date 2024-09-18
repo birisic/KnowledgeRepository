@@ -46,13 +46,14 @@ export class SidebarComponent {
   public constructor(
     private workspaceService: WorkspaceService,
     private router: Router,
-    authService: AuthService
+    private authService: AuthService
   ) {
     this.userWorkspacesUseCases = authService.getUserWorkspacesUseCases();
   }
 
   public ngOnInit(): void {
     this.fetchWorkspaces();
+    console.log(this.authService.tokenData);
   }
 
   public fetchWorkspaces(): void {
