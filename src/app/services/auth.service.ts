@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WorkspaceUseCasesDto } from '../dto/workspace-use-cases.dto';
 import { UseCase } from '../enums/use-case.enum';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ export class AuthService {
   public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
   private localStorageTokenKey = "token";
 
-  public constructor() {}
+  public constructor(
+    private router: Router
+  ) {}
 
   public getUserWorkspacesUseCases(): WorkspaceUseCasesDto[] {
     return this.initializeUserWorkspaceUseCases();
@@ -39,10 +42,16 @@ export class AuthService {
     localStorage.setItem(this.localStorageTokenKey, token);
   }
 
-  public getJwtTokenDataFromLocalStorage(): string {
+  public getJwtTokenData(): string {
     const token = this.getJwtTokenFromLocalStorage();
     // decode...
     const tokenData = '';
     return tokenData;
+  }
+
+  //logout
+  public logout(): void {
+    localStorage.removeItem(this.localStorageTokenKey);
+    this.router.navigateByUrl("/login");
   }
 }

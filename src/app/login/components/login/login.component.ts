@@ -6,6 +6,7 @@ import { ToastStatus } from '../../../enums/toast-status.enum';
 import { LoginService } from '../../business-logic/api/login.service';
 import { Router } from '@angular/router';
 import { HttpStatusCode } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent {
   public constructor(
     private toastService: ToastService,
     private loginService: LoginService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -46,10 +48,10 @@ export class LoginComponent {
   public login(): void {
     const loginData: AuthRequest = this.getLoginData();
         
-    // make api call and return token, if it fails then show a toast message
     this.loginService.requestToken(loginData).subscribe({
-      next: (data) => {
-        console.log(data);
+      next: (data) => { 
+        this.authService.setJwtTokenInLocalStorage(data.token);
+
         this.router.navigateByUrl('/');
         this.toastService.show("Successfully logged in.", ToastStatus.Success);
       },
@@ -71,8 +73,6 @@ export class LoginComponent {
             this.toastService.show("An error occurred on the server. Please try again.", ToastStatus.Danger);
             break;
         }
-
-        console.log(err);
       }
     });
   }

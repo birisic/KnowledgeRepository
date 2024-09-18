@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthRequest } from '../../../interfaces/auth-request';
+import { AuthResponse } from '../../../interfaces/auth-response';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class LoginService {
     private httpClient: HttpClient, 
   ) { }
 
-  public requestToken(dataToSend: AuthRequest): Observable<Object> {
-    return this.httpClient.post(this.apiUrl, dataToSend);
+  public requestToken(dataToSend: AuthRequest): Observable<AuthResponse> {
+    return this.httpClient.post<AuthResponse>(this.apiUrl, dataToSend);
   }
 }
