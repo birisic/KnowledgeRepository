@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthRequest } from '../../../interfaces/auth-request';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class RegisterService { 
   private apiUrl = 'http://localhost:5004/api/users';
 
@@ -13,7 +14,7 @@ export class RegisterService {
     private httpClient: HttpClient, 
   ) { }
 
-  // public requestToken(dataToSend: AuthRequest): Observable<AuthResponse> {
-  //   return this.httpClient.post<AuthResponse>(this.apiUrl, dataToSend);
-  // }
+  public register(dataToSend: AuthRequest): Observable<HttpResponse<void>> {
+    return this.httpClient.post<HttpResponse<void>>(this.apiUrl, dataToSend);
+  }
 }

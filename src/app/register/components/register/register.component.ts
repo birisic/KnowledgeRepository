@@ -5,7 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { AuthRequest } from '../../../interfaces/auth-request';
 import { ToastStatus } from '../../../enums/toast-status.enum';
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { RegisterService } from '../../business-logic/api/register.service';
 
 @Component({
@@ -46,38 +46,30 @@ export class RegisterComponent {
   }
 
   public register(): void {
-    const loginData: AuthRequest = this.getLoginData();
-        
-    // this.registerService.requestToken(loginData).subscribe({
-    //   next: (data) => { 
-    //     this.authService.setJwtTokenInLocalStorage(data.token);
-
-    //     this.router.navigateByUrl('/');
-    //     this.toastService.show("Successfully logged in.", ToastStatus.Success);
-    //   },
-    //   error: (err) => {
-    //     switch (err.status) {
-    //       case HttpStatusCode.Unauthorized:
-    //         this.toastService.show("Failed login attempt. Please check your details and try again.", ToastStatus.Danger);
-    //         break;
-    //       case HttpStatusCode.Conflict:
-    //         this.toastService.show("An error occured on the server. Please try again.", ToastStatus.Warning);
-    //         break;
-    //       case HttpStatusCode.InternalServerError:
-    //         this.toastService.show("An error occured on the server. Please try again later.", ToastStatus.Danger);
-    //         break;
-    //       case HttpStatusCode.UnprocessableEntity:
-    //         this.toastService.show(err.error[0].error, ToastStatus.Danger);
-    //         break;
-    //       default:
-    //         this.toastService.show("An error occurred on the server. Please try again.", ToastStatus.Danger);
-    //         break;
-    //     }
-    //   }
-    // });
+    const registerData: AuthRequest = this.getRegisterData();
+  
+    this.registerService.register(registerData).subscribe({
+      next: (response: HttpResponse<void>) => {
+        this.router.navigateByUrl('/login');
+        this.toastService.show("Registration successful. Please log in.", ToastStatus.Success);
+      },
+      error: (err) => {        
+        switch (err.status) {
+          case HttpStatusCode.Conflict:
+            this.toastService.show("Username already taken.", ToastStatus.Warning);
+            break;
+          case HttpStatusCode.UnprocessableEntity:
+            this.toastService.show(err.error[0].error, ToastStatus.Danger);
+            break;
+          default:
+            this.toastService.show("An error occurred. Please try again later.", ToastStatus.Danger);
+            break;
+        }
+      }
+    });
   }
 
-  public getLoginData(): AuthRequest {
+  public getRegisterData(): AuthRequest {
       let formValue = this.registerForm.getRawValue();
 
       return {
