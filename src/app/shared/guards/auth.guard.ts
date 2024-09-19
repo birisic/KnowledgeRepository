@@ -20,13 +20,13 @@ export class AuthGuard {
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const isLoggedIn: boolean = this.authService.isLoggedIn();
     const isPublic: boolean = this.isPublicRoute(state);
-
     if (isLoggedIn && isPublic) {
       this.router.navigateByUrl('/');
       return false;
     }
 
-    if (!isLoggedIn && !isPublic) {
+    if (!isLoggedIn && !isPublic) {     
+     
       this.router.navigateByUrl('/login');
       return false;
     }

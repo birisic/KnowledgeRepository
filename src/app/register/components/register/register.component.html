@@ -34,8 +34,13 @@
         </div>
       
         <button type="submit" class="btn btn-success w-100" [disabled]="registerForm.invalid">
-          Log in
+          Sign up
         </button>
+
+        <p class="text-center mt-3">
+            Already have an account? 
+            <a routerLink="/login" class="text-decoration-none">Log in</a>
+          </p>
       </form>
     </div>
   </div>

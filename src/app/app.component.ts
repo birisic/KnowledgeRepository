@@ -28,6 +28,6 @@ export class AppComponent {
 
   private updateLayoutVisibility(): void {
     const currentRoute = this.router.url;
-    this.showLayout = currentRoute !== '/login';
+    this.showLayout = currentRoute !== '/login' && currentRoute !== '/register';
   }
 }

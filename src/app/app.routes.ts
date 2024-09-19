@@ -9,5 +9,5 @@ export const routes: Routes = [
   { path: 'create/:parentId', component: WorkspaceCreateComponent, canActivate: [AuthGuard] }, 
   { path: 'edit/:id', component: WorkspaceUpdateComponent, canActivate: [AuthGuard] },
   { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule), canActivate: [AuthGuard] },
-  { path: 'register', loadChildren: () => import('./register/register.module').then(m => m.RegisterModule), canActivateChild: [AuthGuard] },
+  { path: 'register', loadChildren: () => import('./register/register.module').then(m => m.RegisterModule), canActivate: [AuthGuard] },
 ];
