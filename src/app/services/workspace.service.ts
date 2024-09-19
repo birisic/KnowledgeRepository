@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DocumentDto } from '../dto/document.dto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Workspace } from '../interfaces/workspace.interface';
 import { ToastStatus } from '../enums/toast-status.enum';
 import { ToastService } from './toast.service';
 import { Router } from '@angular/router';
+import { WorkspaceDto } from '../dto/workspace.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class WorkspaceService
   public currentWorkspace$ = this.currentWorkspaceSubject.asObservable();
   public workspacesSubject = new BehaviorSubject<Workspace[]>([]);
   public workspaces$ = this.workspacesSubject.asObservable();
-  private dataPath = "http://localhost:5004/api/workspaces/getAll";//'assets/data/workspaces.json';
+  private dataPath = "http://localhost:5004/api/workspaces/getAll";
+  private createPath = "http://localhost:5004/api/workspaces";
 
   private constructor(
     private http: HttpClient, 
@@ -71,5 +73,9 @@ export class WorkspaceService
 
   public routeToEditPage(workspaceId: number): void {
     this.router.navigate(['/edit/', workspaceId]);
+  }
+
+  public createWorkspace(workspace: WorkspaceDto): Observable<HttpResponse<void>> {
+    return this.http.post<HttpResponse<void>>(this.createPath, workspace);
   }
 }

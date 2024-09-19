@@ -12,6 +12,7 @@ import { ToastStatus } from '../enums/toast-status.enum';
 import { AuthService } from '../services/auth.service';
 import { UseCase } from '../enums/use-case.enum';
 import { WorkspaceUseCasesDto } from '../dto/workspace-use-cases.dto';
+import { WorkspaceDto } from '../dto/workspace.dto';
 
 @Component({
   selector: 'app-workspace-create',
@@ -77,24 +78,32 @@ export class WorkspaceCreateComponent {
         useCases = [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion];
     }
 
-    const newWorkspace: Workspace = {
-      id: Date.now(), 
-      name: this.workspaceName,
-      type: this.workspaceType,
-      ownerId: 1,
-      contents: this.workspaceContents,
-      parentId: this.parentId
+    const typeString = this.workspaceType.toString(); 
+
+    const newWorkspace: WorkspaceDto = {
+        name: this.workspaceName,
+        type: typeString,
+        contents: this.workspaceContents,
+        parentId: this.parentId,
     };
 
-    this.workspaceService.workspacesSubject.next([...this.workspaceService.workspacesSubject.getValue(), newWorkspace]);
+    this.workspaceService.createWorkspace(newWorkspace).subscribe({
+      next: (createdWorkspace) => {
+        
+        // const workspaceUseCaseDto = new WorkspaceUseCasesDto(createdWorkspace.id, useCases);
+        // this.authService.userWorkspacesUseCases.push(workspaceUseCaseDto);
 
-    const workspaceUseCaseDto = new WorkspaceUseCasesDto(newWorkspace.id, useCases);
-    this.authService.userWorkspacesUseCases.push(workspaceUseCaseDto);
+        // if (createdWorkspace.type === WorkspaceType.Document) {
+        //   this.workspaceService.setContent(this.workspaceName, this.workspaceContents);
+        // } 
 
-    if (newWorkspace.type === WorkspaceType.Document) {
-      this.workspaceService.setContent(this.workspaceName, this.workspaceContents);
-    } 
-
-    this.router.navigate(['/']);
+        this.toastService.show("Creating a workspace requires you to login again to refresh your token.", ToastStatus.Info);
+        this.authService.logout();
+      },
+      error: (error) => {
+        this.toastService.show("Failed to create workspace. Please try again.", ToastStatus.Danger);
+        console.error('Error creating workspace:', error);
+      }
+    });
   }
 }
