@@ -10,10 +10,13 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
   public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
   private localStorageTokenKey: string = "token";
+  private jwtHelper: JwtHelperService;
 
   public constructor(
     private router: Router,
-  ) {}
+  ) {
+    this.jwtHelper = new JwtHelperService();
+  }
 
   public getUserWorkspacesUseCases(): WorkspaceUseCasesDto[] {
     return this.initializeUserWorkspaceUseCases();
@@ -21,16 +24,18 @@ export class AuthService {
 
   // decode the JWT, extract the usecases and construct the DTOs in this method (za ispit)
   private initializeUserWorkspaceUseCases(): WorkspaceUseCasesDto[] {
-    this.userWorkspacesUseCases = [
-      new WorkspaceUseCasesDto(1, [UseCase.WorkspaceCreation, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(2, [UseCase.WorkspaceCreation, UseCase.WorkspaceDeletion, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(3, [UseCase.WorkspaceCreation, UseCase.WorkspaceDeletion, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(4, [UseCase.WorkspaceCreation, UseCase.WorkspaceDeletion, UseCase.WorkspaceModification]),
-      new WorkspaceUseCasesDto(5, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
-      new WorkspaceUseCasesDto(6, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
-      new WorkspaceUseCasesDto(7, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion]),
-      new WorkspaceUseCasesDto(8, [UseCase.WorkspaceModification, UseCase.WorkspaceDeletion])
-    ];
+    const token = this.getJwtTokenFromLocalStorage();
+    if (!token) {
+      return [];
+    }
+
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    
+    const workspacesData = JSON.parse(decodedToken.Workspaces);
+
+    this.userWorkspacesUseCases = workspacesData.map((workspace: any) => 
+      new WorkspaceUseCasesDto(workspace.WorkspaceId, workspace.UseCaseIds)
+    );
 
     return this.userWorkspacesUseCases;
   }
@@ -50,8 +55,7 @@ export class AuthService {
       return null;
     }
 
-    const jwtHelper = new JwtHelperService();
-    return jwtHelper.decodeToken(token);
+    return this.jwtHelper.decodeToken(token);
   }
 
   public isLoggedIn(): boolean {

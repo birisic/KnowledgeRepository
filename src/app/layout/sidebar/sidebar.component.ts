@@ -46,7 +46,7 @@ export class SidebarComponent {
   public constructor(
     private workspaceService: WorkspaceService,
     private router: Router,
-    private authService: AuthService
+    authService: AuthService
   ) {
     this.userWorkspacesUseCases = authService.getUserWorkspacesUseCases();
   }
@@ -118,25 +118,6 @@ export class SidebarComponent {
     const userWorkspace = this.userWorkspacesUseCases.find(wu => wu.workspaceId === workspaceId);
     return userWorkspace ? userWorkspace.useCases.includes(useCase) : false;
   }
-
-  // public getVisibleWorkspaces(): Workspace[] {
-  //   return this.workspaces.filter(workspace => this.hasAccessToWorkspaceAndAncestors(workspace));
-  // }
-
-  // recursive function to check if the workspace and all its ancestors have the WorkspaceRetrieval UseCase
-  // public hasAccessToWorkspaceAndAncestors(workspace: Workspace): boolean {
-  //   if (!this.hasUseCase(workspace.id, UseCase.WorkspaceRetrieval)) {
-  //     return false;
-  //   }
-
-  //   // if root workspace
-  //   if (!workspace.parentId) {
-  //     return true;
-  //   }
-
-  //   const parentWorkspace = this.workspaces.find(w => w.id === workspace.parentId);
-  //   return parentWorkspace ? this.hasAccessToWorkspaceAndAncestors(parentWorkspace) : false;
-  // }
 
   public getRootWorkspaces(): Workspace[] {
     return this.workspaces.filter(workspace => !workspace.parentId);// && this.hasAccessToWorkspaceAndAncestors(workspace));
