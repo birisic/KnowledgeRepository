@@ -59,20 +59,12 @@ export class WorkspaceService
     });
   }
 
-  public deleteWorkspace(workspace: Workspace) {
-    const childWorkspaces = this.getChildWorkspaces(workspace);
-
-    if (childWorkspaces.length > 0) {
-      this.toastService.show("Cannot delete the workspace because it has child workspaces.", ToastStatus.Warning);
-      return; 
-    }
-
-    const currentWorkspaces = this.workspacesSubject.getValue();
-    const updatedWorkspaces = currentWorkspaces.filter(w => w.id !== workspace.id);
-    this.workspacesSubject.next(updatedWorkspaces);
-    this.setContent();
-    this.toastService.show(workspace.type + ` "${workspace.name}"` +" was successfully deleted.", ToastStatus.Success);
-  }
+  public deleteWorkspace(dto: WorkspaceDto): Observable<HttpResponse<void>> {
+    return this.http.request<void>('DELETE', `${this.basePath}/${dto.id}`, {
+        body: dto,
+        observe: 'response'
+    });
+}
 
   public getChildWorkspaces(parentWorkspace: Workspace): Workspace[] {
     const currentWorkspaces = this.workspacesSubject.getValue();

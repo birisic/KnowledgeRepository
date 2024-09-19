@@ -6,6 +6,10 @@ import { WorkspaceType } from '../enums/workspace-type.enum';
 import { UseCase } from '../enums/use-case.enum';
 import { WorkspaceService } from '../services/workspace.service';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
+import { ToastService } from '../services/toast.service';
+import { ToastStatus } from '../enums/toast-status.enum';
+import { HttpResponse } from '@angular/common/http';
+import { WorkspaceDto } from '../dto/workspace.dto';
 
 @Component({
   selector: 'app-menu',
@@ -27,7 +31,8 @@ export class MenuComponent {
 
   public constructor(
     authService: AuthService,
-    private workspaceService: WorkspaceService
+    private workspaceService: WorkspaceService,
+    private toastService: ToastService
   ) {
     this.userWorkspacesUseCases = authService.getUserWorkspacesUseCases();
   }
@@ -83,7 +88,35 @@ export class MenuComponent {
 
   public confirmDeletion(): void {
     if (this.selectedWorkspace) {
-      this.workspaceService.deleteWorkspace(this.selectedWorkspace);
+      const childWorkspaces = this.workspaceService.getChildWorkspaces(this.selectedWorkspace);
+
+    if (childWorkspaces.length > 0) {
+      this.toastService.show("Cannot delete the workspace because it has child workspaces.", ToastStatus.Warning);
+      this.showConfirmationDialog = false; 
+
+      return; 
+    }
+
+    const workspaceDto: WorkspaceDto = {
+      id: this.selectedWorkspace.id, 
+      name: this.selectedWorkspace.name,
+      type: this.selectedWorkspace.type,
+      contents: this.selectedWorkspace.contents ?? '',
+      parentId: this.selectedWorkspace.parentId
+  };
+
+    this.workspaceService.deleteWorkspace(workspaceDto).subscribe({
+      next: (response: HttpResponse<void>) => {
+          this.workspaceService.refreshWorkspaces();
+          this.workspaceService.setContent(); 
+          this.toastService.show(this.selectedWorkspace?.type + ` "${this.selectedWorkspace?.name}"` + " was successfully deleted.", ToastStatus.Success);
+      },
+      error: (error) => {
+          this.toastService.show("Failed to delete workspace. Please try again.", ToastStatus.Danger);
+          console.error('Error deleting workspace.');
+          console.error(error);
+      }
+  });
     }
 
     this.showConfirmationDialog = false; 
