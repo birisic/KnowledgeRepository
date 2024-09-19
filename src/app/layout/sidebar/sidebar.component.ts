@@ -53,8 +53,6 @@ export class SidebarComponent {
 
   public ngOnInit(): void {
     this.fetchWorkspaces();
-    // tokenData is available here
-    // console.log(this.authService.tokenData);
   }
 
   public fetchWorkspaces(): void {
@@ -67,7 +65,9 @@ export class SidebarComponent {
       });
     });
 
-    this.workspaceService.initializeWorkspaces();
+    if (this.workspaces.length === 0) {
+      this.workspaceService.initializeWorkspaces();
+    }
   }
 
   public toggleWorkspace(workspace: Workspace): void {

@@ -7,6 +7,7 @@ import { LoginService } from '../../business-logic/api/login.service';
 import { Router } from '@angular/router';
 import { HttpStatusCode } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
+import { WorkspaceService } from '../../../services/workspace.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent {
     private toastService: ToastService,
     private loginService: LoginService,
     private authService: AuthService,
+    private workspaceService: WorkspaceService,
     private router: Router
   ) {}
 
@@ -51,6 +53,8 @@ export class LoginComponent {
     this.loginService.requestToken(loginData).subscribe({
       next: (data) => { 
         this.authService.setJwtTokenInLocalStorage(data.token);
+
+        this.workspaceService.initializeWorkspaces();
 
         this.router.navigateByUrl('/');
         this.toastService.show("Successfully logged in.", ToastStatus.Success);

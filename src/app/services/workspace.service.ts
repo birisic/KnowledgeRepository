@@ -10,13 +10,14 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+
 export class WorkspaceService 
 {
   public currentWorkspaceSubject = new BehaviorSubject<DocumentDto | null>(null);
   public currentWorkspace$ = this.currentWorkspaceSubject.asObservable();
   public workspacesSubject = new BehaviorSubject<Workspace[]>([]);
   public workspaces$ = this.workspacesSubject.asObservable();
-  private dataPath = 'assets/data/workspaces.json';
+  private dataPath = "http://localhost:5004/api/workspaces/getAll";//'assets/data/workspaces.json';
 
   private constructor(
     private http: HttpClient, 
