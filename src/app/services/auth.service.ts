@@ -10,7 +10,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
   public userWorkspacesUseCases: WorkspaceUseCasesDto[] = [];
   private localStorageTokenKey: string = "token";
-  public tokenData!: string | null;
 
   public constructor(
     private router: Router,
@@ -55,8 +54,8 @@ export class AuthService {
     return jwtHelper.decodeToken(token);
   }
 
-  public decodeToken(): void {
-    this.tokenData = this.getJwtTokenData();
+  public isLoggedIn(): boolean {
+    return !!this.getJwtTokenFromLocalStorage();
   }
 
   public logout(): void {

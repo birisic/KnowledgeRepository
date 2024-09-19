@@ -53,7 +53,8 @@ export class SidebarComponent {
 
   public ngOnInit(): void {
     this.fetchWorkspaces();
-    console.log(this.authService.tokenData);
+    // tokenData is available here
+    // console.log(this.authService.tokenData);
   }
 
   public fetchWorkspaces(): void {

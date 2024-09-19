@@ -76,7 +76,6 @@ export class WorkspaceUpdateComponent {
       contents: this.workspaceType === WorkspaceType.Document ? this.workspaceContents : '',
       parentId: this.parentId
     };
-    console.log(updatedWorkspace);
     
 
     const workspaces = this.workspaceService.workspacesSubject.getValue().map(w =>
