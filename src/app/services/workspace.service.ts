@@ -18,14 +18,26 @@ export class WorkspaceService
   public currentWorkspace$ = this.currentWorkspaceSubject.asObservable();
   public workspacesSubject = new BehaviorSubject<Workspace[]>([]);
   public workspaces$ = this.workspacesSubject.asObservable();
-  private dataPath = "http://localhost:5004/api/workspaces/getAll";
-  private createPath = "http://localhost:5004/api/workspaces";
+  private basePath = "http://localhost:5004/api/workspaces";
+  private dataPath = `${this.basePath}/getAll`;
 
   private constructor(
     private http: HttpClient, 
     private toastService: ToastService, 
     private router: Router
   ) {}
+
+  public refreshWorkspaces(): void {
+    this.http.get<Workspace[]>(this.dataPath).subscribe({
+      next: (workspaces) => {
+        this.workspacesSubject.next(workspaces);
+      },
+      error: (error) => {
+        console.error('Error refreshing workspaces.');
+        console.error(error);
+      }
+    });
+  }
 
   public setContent(name:string | null = null, contents: string | null = null): void {
     let dto: DocumentDto | null = null;
@@ -76,6 +88,10 @@ export class WorkspaceService
   }
 
   public createWorkspace(workspace: WorkspaceDto): Observable<HttpResponse<void>> {
-    return this.http.post<HttpResponse<void>>(this.createPath, workspace);
+    return this.http.post<HttpResponse<void>>(this.basePath, workspace);
   }
+
+  public updateWorkspace(workspace: WorkspaceDto): Observable<HttpResponse<void>> {
+    return this.http.put<HttpResponse<void>>(`${this.basePath}/${workspace.id}`, workspace);
+}
 }

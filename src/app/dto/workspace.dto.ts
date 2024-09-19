@@ -5,6 +5,5 @@ export class WorkspaceDto {
         public contents: string,
         public id?: number | null,
         public parentId?: number | null,
-        // public images: string[] = []
     ) {}
 }

@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { WorkspaceDto } from '../dto/workspace.dto';
+import { HttpResponse } from '@angular/common/http';
 
 
 @Component({
@@ -45,14 +47,16 @@ export class WorkspaceUpdateComponent {
     this.workspaceService.workspaces$.subscribe(workspaces => {
       const workspace = workspaces.find(w => w.id === this.workspaceId);
       if (workspace) {
-        if (typeof workspace.contents === "string") {
-          this.workspaceContents = workspace.contents ;
-        }
+        // if (typeof workspace.contents === "string") {
+        //   this.workspaceContents = workspace.contents ;
+        // }
 
-        if (workspace.parentId) {          
-          this.parentId = workspace.parentId
-        }
+        // if (workspace.parentId) {          
+        //   this.parentId = workspace.parentId
+        // }
 
+        this.workspaceContents = workspace.contents || '';
+        this.parentId = workspace.parentId || null;
         this.workspaceName = workspace.name;
         this.workspaceType = workspace.type;
       }
@@ -68,25 +72,26 @@ export class WorkspaceUpdateComponent {
       return;
     }
 
-    const updatedWorkspace: Workspace = {
+    const updatedWorkspace: WorkspaceDto = {
       id: this.workspaceId!,
       name: this.workspaceName,
-      type: this.workspaceType!, //type should not change
-      ownerId: 1, 
+      type: this.workspaceType!.toString(),
       contents: this.workspaceType === WorkspaceType.Document ? this.workspaceContents : '',
       parentId: this.parentId
-    };
+    };    
     
 
-    const workspaces = this.workspaceService.workspacesSubject.getValue().map(w =>
-      w.id === this.workspaceId ? updatedWorkspace : w
-    );
-    this.workspaceService.workspacesSubject.next(workspaces);
-
-    if (updatedWorkspace.type === WorkspaceType.Document) {
-      this.workspaceService.setContent(this.workspaceName, this.workspaceContents);
-    } 
-
-    this.router.navigate(['/']);
+    this.workspaceService.updateWorkspace(updatedWorkspace).subscribe({
+      next: (response: HttpResponse<void>) => {
+        this.toastService.show("Workspace updated successfully.", ToastStatus.Success);
+        this.workspaceService.refreshWorkspaces(); 
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.toastService.show("Failed to update workspace. Please try again.", ToastStatus.Danger);
+        console.error('Error updating workspace.');
+        console.error(error);
+      }
+    });
   }
 }

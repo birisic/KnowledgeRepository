@@ -84,19 +84,11 @@ export class WorkspaceCreateComponent {
         name: this.workspaceName,
         type: typeString,
         contents: this.workspaceContents,
-        parentId: this.parentId,
+        parentId: this.parentId
     };
 
     this.workspaceService.createWorkspace(newWorkspace).subscribe({
       next: (createdWorkspace) => {
-        
-        // const workspaceUseCaseDto = new WorkspaceUseCasesDto(createdWorkspace.id, useCases);
-        // this.authService.userWorkspacesUseCases.push(workspaceUseCaseDto);
-
-        // if (createdWorkspace.type === WorkspaceType.Document) {
-        //   this.workspaceService.setContent(this.workspaceName, this.workspaceContents);
-        // } 
-
         this.toastService.show("Creating a workspace requires you to login again to refresh your token.", ToastStatus.Info);
         this.authService.logout();
       },
