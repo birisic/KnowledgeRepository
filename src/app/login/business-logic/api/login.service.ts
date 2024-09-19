@@ -8,8 +8,7 @@ import { AuthResponse } from '../../../interfaces/auth-response';
   providedIn: 'root'
 })
 export class LoginService { 
-  private apiUrl = 'http://localhost:5004/api/auth'; // port mozda moze da se razlikuje od okruzenja do okruzenja
-
+  private apiUrl = 'http://localhost:5004/api/auth';
   public constructor(
     private httpClient: HttpClient, 
   ) { }
